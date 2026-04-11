@@ -10,7 +10,7 @@
 
 <body>
     <h2>Daftar Akun Baru</h2>
-    <form action="/register" method="POST">
+    <form action="{{ route('register.post') }}" method="POST">
         @csrf
         <label>Nama:</label><br>
         <input type="text" name="name" required><br><br>

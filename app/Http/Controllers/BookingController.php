@@ -3,63 +3,51 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // Menampilkan halaman detail sebelum memesan
+    public function show($id)
     {
-        //
+        $schedule = Schedule::findOrFail($id);
+        return view('user.booking_detail', compact('schedule'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Memproses pesanan ke database
+    public function store(Request $request, $id)
     {
-        //
+        $schedule = Schedule::findOrFail($id);
+
+        // Hitung total harga
+        $total_price = $request->total_seats * $schedule->price;
+
+        // Simpan ke tabel Bookings
+        Booking::create([
+            'user_id' => Auth::id(),
+            'schedule_id' => $schedule->id,
+            'total_seats' => $request->total_seats,
+            'total_price' => $total_price,
+            'status' => 'Lunas'
+        ]);
+
+        // Kurangi stok di tabel schedules
+        $schedule->decrement('stock', $request->total_seats);
+
+        // Kembali ke dashboard
+        return redirect('/dashboard');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Menampilkan riwayat pesanan user yang sedang login
+    public function history()
     {
-        //
-    }
+        $orders = Booking::where('user_id', Auth::id())
+                        ->with('schedule') 
+                        ->latest()
+                        ->get();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Booking $booking)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Booking $booking)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Booking $booking)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Booking $booking)
-    {
-        //
+        return view('user.history', compact('orders'));
     }
 }
