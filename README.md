@@ -1,94 +1,81 @@
-E-Ticketing Easy ✈️
-E-Ticketing Easy adalah aplikasi berbasis web sederhana untuk manajemen pemesanan tiket pesawat. Proyek ini dirancang untuk memenuhi kebutuhan standar kompetensi LSP RPL, mencakup fitur autentikasi, manajemen jadwal oleh admin, serta proses pemesanan oleh pengguna.
+# ✈️ E-Ticketing Easy
+> **Solusi Manajemen Tiket Pesawat Sederhana & Efisien**
 
-🚀 Fitur Utama
-Pengguna (User)
-Registrasi & Login: Akses akun pribadi.
+Aplikasi ini dibangun khusus untuk kebutuhan **LSP RPL (Rekayasa Perangkat Lunak)**. Fokus utama proyek ini adalah kemudahan penggunaan (*user-friendly*) dan implementasi logika *backend* yang solid menggunakan Laravel 11.
 
-Dashboard: Melihat daftar jadwal penerbangan yang tersedia (stok > 0).
+![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
 
-Booking Detail: Memilih jumlah kursi dan melihat kalkulasi total harga secara otomatis.
+---
 
-Riwayat Pemesanan: Melihat daftar tiket yang telah dipesan sebelumnya.
+## 📌 Fitur Utama
 
-Administrator
-Manajemen Jadwal (CRUD): Menambah, melihat, mengubah, dan menghapus jadwal penerbangan.
+### 👤 Pengguna (User)
+- [x] **Authentication:** Registrasi dan Login akun.
+- [x] **Smart Dashboard:** Menampilkan jadwal penerbangan yang masih memiliki stok.
+- [x] **Direct Booking:** Pilih jumlah kursi dengan kalkulasi harga otomatis (Real-time JS).
+- [x] **Order History:** Pantau semua riwayat perjalanan yang telah dipesan.
 
-Monitoring Transaksi: Melihat semua data pemesanan yang dilakukan oleh seluruh pengguna.
+### 🔑 Administrator
+- [x] **Schedule Management:** Full CRUD (Create, Read, Update, Delete) jadwal pesawat.
+- [x] **Transaction Monitoring:** Melihat data pemesanan dari seluruh user secara terpusat.
+- [x] **Automatic Stock Control:** Stok berkurang otomatis setiap kali transaksi berhasil.
 
-Manajemen Stok: Stok berkurang otomatis saat user melakukan pemesanan.
+---
 
-🛠️ Prasyarat (Prerequisites)
-Sebelum memulai, pastikan perangkat Anda sudah terpasang:
+## 📂 Struktur Database
 
-PHP >= 8.2
+| Tabel | Deskripsi | Field Kunci |
+| :--- | :--- | :--- |
+| **Users** | Akun pengguna & level akses | `id`, `name`, `email`, `role` |
+| **Schedules** | Data jadwal penerbangan | `plane_name`, `origin`, `destination`, `stock` |
+| **Bookings** | Riwayat transaksi | `user_id`, `schedule_id`, `total_price` |
 
-Composer
+---
 
-MySQL / MariaDB
+## ⚙️ Cara Instalasi
 
-Web Server (Apache/Nginx atau menggunakan Laragon)
+Ikuti langkah-langkah di bawah ini untuk menjalankan project di lokal:
 
-💻 Instalasi
-Ikuti langkah-langkah berikut untuk menjalankan proyek di komputer lokal Anda:
-
-1. Clone Repositori
-Buka terminal/git bash dan jalankan perintah:
-
-Bash
-git clone https://github.com/username-anda/e-ticketing-easy.git
-cd e-ticketing-easy
-2. Instal Dependency
-Instal library PHP yang dibutuhkan menggunakan Composer:
+1. **Clone Project**
+   ```bash
+   git clone [https://github.com/username/e-ticketing-easy.git](https://github.com/username/e-ticketing-easy.git)
+   cd e-ticketing-easy
+Dependencies & Environment
 
 Bash
 composer install
-3. Konfigurasi Database
-Salin file .env.example menjadi .env:
-
-Bash
 cp .env.example .env
-Buka file .env dan sesuaikan konfigurasi database Anda:
-
-Cuplikan kode
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=nama_database_anda
-DB_USERNAME=root
-DB_PASSWORD=
-4. Generate App Key
-Bash
 php artisan key:generate
-5. Jalankan Migration
-Buat tabel-tabel yang dibutuhkan ke dalam database:
+Database Setup
+
+Buat database baru di phpMyAdmin.
+
+Update konfigurasi database di file .env.
+
+Jalankan migrasi:
 
 Bash
 php artisan migrate
-6. Jalankan Server
+Launch!
+
 Bash
 php artisan serve
-Akses aplikasi melalui browser di: http://localhost:8000
+Buka: http://localhost:8000
 
-📂 Struktur Database
-Aplikasi ini menggunakan tiga tabel utama:
+📁 Struktur Folder Penting
+Agar mudah dalam pengembangan, berikut adalah letak file-file utamanya:
 
-Users: Menyimpan data kredensial dan role (admin atau user).
-
-Schedules: Menyimpan detail pesawat, rute, waktu keberangkatan, harga, dan stok.
-
-Bookings: Menyimpan relasi transaksi antara user dan jadwal yang dipilih.
-
-🛠️ Teknologi yang Digunakan
-Framework: Laravel 11
-
-Bahasa: PHP 8.3
-
-Database: MySQL
-
-Frontend: Blade Templating (Plain HTML untuk kesederhanaan)
-
-📝 Catatan Tambahan
-Pastikan untuk menjalankan php artisan migrate agar relasi antar tabel (Foreign Key) terbentuk dengan benar.
-
-Gunakan akun dengan role admin untuk mengakses fitur pengelolaan jadwal di /admin/schedules.
+Plaintext
+app/
+ └── Http/Controllers/
+      ├── AuthController.php        # Logika Login/Register
+      ├── BookingController.php     # Logika Pemesanan User
+      └── Admin/
+           ├── ScheduleController.php # CRUD Jadwal Admin
+           └── BookingController.php  # Monitoring Admin
+resources/views/
+ ├── auth/      # Tampilan Login/Register
+ ├── user/      # Dashboard & History User
+ └── admin/     # Panel Kendali Admin
