@@ -13,6 +13,7 @@ class Booking extends Model
         'schedule_id',
         'total_seats',
         'total_price',
+        'status'
     ];
 
     public function schedule()

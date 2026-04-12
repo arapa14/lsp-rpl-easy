@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('schedule_id')->constrained()->onDelete('cascade');
             $table->integer('total_seats');
             $table->integer('total_price');
+            $table->string('status');
             $table->timestamps();
         });
     }

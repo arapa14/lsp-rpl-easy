@@ -56,6 +56,7 @@
                 <th>Pesawat</th>
                 <th>Jumlah Kursi</th>
                 <th>Total Bayar</th>
+                <th>Status</th>
                 <th>Waktu Transaksi</th>
             </tr>
         </thead>
@@ -67,6 +68,7 @@
                     <td>{{ $b->schedule->plane_name }}</td>
                     <td>{{ $b->total_seats }}</td>
                     <td>Rp {{ number_format($b->total_price) }}</td>
+                    <td>{{ $b->status }}</td>
                     <td>{{ $b->created_at->format('d/m/Y H:i') }}</td>
                 </tr>
             @endforeach
